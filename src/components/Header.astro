@@ -1,0 +1,115 @@
+<header class="flex justify-between items-center py-3 w-[1200px]">
+    <img 
+    class="w-16 h-16"
+    src="/images/selenemgr-logo.png" 
+    alt="selene_mgr logo"
+    >
+
+    <button class="mobile-nav-toggle" aria-controls="header-navbar" aria-expanded="false"></button>
+        <span class="sr-only">Menu</span>
+    </button>
+
+    <nav id="header-navbar" data-visible="false" class="flex flex-row gap-x-12">
+        <a href="/">Home</a>
+        <a href="/">About</a>
+        <a href="/">Projects</a>
+        <a href="/">Contact</a>
+    </nav>
+</header>
+
+<style>
+
+    a:hover,
+    a:focus {
+        color: #FF66C4;
+        transform: scale(1.2);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    a:not(:hover){
+        transform: scale(1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    @media (max-width: 600px) {
+        #header-navbar[data-visible="true"] {
+            transform: translateX(0%);
+            transition: transform 0.4s ease-out;
+        }
+
+        #header-navbar {
+            position: fixed;
+            inset: 0 0 0 55%;
+
+            z-index: 1000;
+            
+            flex-direction: column;
+            align-items: end;
+
+            row-gap: 30px;
+            padding: 100px 5vh;
+
+            background: hsla(307, 100%, 84%, 0.1);
+            backdrop-filter: blur(4px);
+
+            transform: translateX(100%);
+            transition: transform 0.4s ease-out;
+        }
+
+        .mobile-nav-toggle {
+            position: fixed;
+            flex-direction: column;
+            align-items: end;
+
+            z-index: 9999;
+
+            background: url('/assets/menu-icon.png') center/contain;
+            filter: invert(1);
+            background-repeat: no-repeat;
+            
+            width: 30px;
+            aspect-ratio: 1;
+
+            top: 32px;
+            right: 6vh;
+        }
+
+        .mobile-nav-toggle[aria-expanded="true"] {
+            background: url('/assets/close-icon.png') center/contain;
+            filter: invert(1);
+            background-repeat: no-repeat;
+            transform: scale(0.7);
+        }
+
+        .mobile-nav-toggle:hover {
+            cursor: pointer;
+        }
+    }
+</style>
+
+<script>
+    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+    const headerNavbar = document.getElementById('header-navbar');
+
+    // Toggle navigation menu when clicking on the menu button
+    mobileNavToggle.addEventListener('click', (event) => {
+        const visible = headerNavbar.getAttribute('data-visible')
+        if (visible === 'false') {
+            headerNavbar.setAttribute('data-visible', 'true')
+            mobileNavToggle.setAttribute('aria-expanded', 'true')
+        } else {
+            headerNavbar.setAttribute('data-visible', 'false')
+            mobileNavToggle.setAttribute('aria-expanded', 'false')
+        }
+        event.stopPropagation();
+    });
+
+    // Close navigation menu when clicking outside of it
+    document.addEventListener('click', (event) => {
+        const isClickInside = headerNavbar.contains(event.target) || mobileNavToggle.contains(event.target);
+        if (!isClickInside && headerNavbar.getAttribute('data-visible') === 'true') {
+            headerNavbar.setAttribute('data-visible', 'false');
+            mobileNavToggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+</script>
